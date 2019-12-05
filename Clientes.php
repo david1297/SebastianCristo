@@ -98,171 +98,338 @@ if (isset($_GET['Documento'])) {
         include('Menu.php');
       ?>
       <div class="container-fluid">
-
-<div class="row" >
-    <div class="col-xl-12 col-lg-12">
-        <div class="card shadow mb-4">
-            <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary" style='float: left !important;'>Clientes</h6>
-                <div class="btn-group" style='float: right !important;'>
-                    <button type="button" class="btn btn-danger" onclick="location.href='ConsultarClientes.php';">
-                        <span class="fas fa-user-tie"></span> Consultar Clientes
-                    </button>
+        <div class="row" >
+          <div class="col-xl-12 col-lg-12">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h2 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'>Clientes</h2>
+                    <div class="btn-group" style='float: right !important;'>
+                        <button type="button" class="btn btn-danger" onclick="location.href='ConsultarClientes.php';">
+                            <span class="fas fa-user-tie"></span> Consultar Clientes
+                        </button>
+                    </div>
                 </div>
-            </div>
-            <div class="card-body">
-                <form   id="Guardar_Cliente" name="Guardar_Cliente" class="form-horizontal col-sm-12" method="post">
-                <input type="text" class="form-control " hidden id="EstadoC" name="EstadoC"  value="<?php echo $EstadoC; ?>" >
-                
-                <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-                    <div class="col-sm-2 offset-sm-1">
-						  <label for="Documento" class="control-label">Fecha de Creacion</label>
-					  </div>
-                    <div class="col-sm-8">      
-                    <input type="Date" class="form-control" id="FechaCreacion" name="FechaCreacion" value="<?php echo $FechaCreacion?>"readonly>
-					</div>
-                </div>
-                <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-                        <div class="col-sm-2 offset-sm-1">
-						    <label for="Tipo_Documento" class="control-label">Tipo de Documento</label>
-					    </div>
-                        <div class="col-sm-8">
+                <div class="card-body"> 
+                  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                      <a class="nav-link active" id="pills-Datos-tab" data-toggle="pill" href="#pills-Datos" role="tab" aria-controls="pills-Datos" aria-selected="true">Datos</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" id="pills-Procesos-tab" data-toggle="pill" href="#pills-Procesos" role="tab" aria-controls="pills-Procesos" aria-selected="false">Procesos</a>
+                    </li>
+                  </ul>
+                  <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-Datos" role="tabpanel" aria-labelledby="pills-Datos-tab">
+                      <form   id="Guardar_Cliente" name="Guardar_Cliente" class="form-horizontal col-sm-12" method="post">
+                        <input type="text" class="form-control " hidden id="EstadoC" name="EstadoC"  value="<?php echo $EstadoC; ?>" >
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Documento" class="control-label">Fecha de Creacion</label>
+                          </div>
+                          <div class="col-sm-8">      
+                            <input type="Date" class="form-control" id="FechaCreacion" name="FechaCreacion" value="<?php echo $FechaCreacion?>"readonly>
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Tipo_Documento" class="control-label">Tipo de Documento</label>
+                          </div>
+                          <div class="col-sm-8">
                             <select name="Tipo_Documento" id="Tipo_Documento" class='form-control form-control-user'>
-                                <option value="Cedula" <?php echo $Cedula;?>>Cedula de Ciudadania</option>
-                                <option value="Pasaporte"<?php echo $Pasaporte;?>>Pasaporte</option>
-                                <option value="Nit" <?php echo $Nit;?>>Nit</option>
-                                <option value="Extrangera" <?php echo $Extrangera;?>>Cedula Extrangera</option>
+                              <option value="Cedula" <?php echo $Cedula;?>>Cedula de Ciudadania</option>
+                              <option value="Pasaporte"<?php echo $Pasaporte;?>>Pasaporte</option>
+                              <option value="Nit" <?php echo $Nit;?>>Nit</option>
+                              <option value="Extrangera" <?php echo $Extrangera;?>>Cedula Extrangera</option>
                             </select>
-					    </div>
-                    </div>
-                    <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-                        <div class="col-sm-2 offset-sm-1">
-						    <label for="Tipo_Persona" class="control-label">Tipo de Persona</label>
-					    </div>
-                        <div class="col-sm-8">
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Tipo_Persona" class="control-label">Tipo de Persona</label>
+                          </div>
+                          <div class="col-sm-8">
                             <select name="Tipo_Persona" id="Tipo_Persona" class='form-control form-control-user'>
-                                <option value="Natural" <?php echo $Natural;?>>Natural</option>
-                                <option value="Juridica"<?php echo $Juridica;?>>Juridica</option>
+                              <option value="Natural" <?php echo $Natural;?>>Natural</option>
+                              <option value="Juridica"<?php echo $Juridica;?>>Juridica</option>
                             </select>
-					    </div>
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Documento" class="control-label">Numero de Documento</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <input  type="text" class="form-control form-control-user"  onkeypress='return validaNumericos(event)' id="Documento" name="Documento" required placeholder="Numero de Documento" value="<?php echo $Documento; ?>" autocomplete='off'>
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Nombre" class="control-label">Nombre</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <input  type="text" class="form-control form-control-user"  id="Nombre" name="Nombre" required placeholder="Nombre " value="<?php echo $Nombre; ?>" autocomplete='off'>
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Telefono" class="control-label">Telefono</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-user"  onkeypress='return validaNumericos(event)' id="Telefono" name="Telefono" required placeholder="Telefono" value="<?php echo $Telefono; ?>" autocomplete='off'>
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Direccion" class="control-label">Direccion</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-user"   id="Direccion" name="Direccion" required placeholder="Direccion" value="<?php echo $Direccion; ?>" autocomplete='off'>
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Correo" class="control-label">Correo</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <input  type="email" class="form-control form-control-user"   id="Correo" name="Correo" required placeholder="Correo" value="<?php echo $Correo; ?>" autocomplete='off'>
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Tipo_Documento" class="control-label">Departamento</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <?PHP
+                              $query1=mysqli_query($con, "select * from DEPARTAMENTOS order by Nombre");
+                              echo' <select class="form-control" id="Departamento" name ="Departamento" placeholder="Departamento" onchange="CargarCiudades()">';
+                              while($rw_Admin1=mysqli_fetch_array($query1)){
+                                if ($Departamento ==$rw_Admin1['Codigo']){
+                                  echo '<option value="'.$rw_Admin1['Codigo'].'" selected >'.utf8_encode($rw_Admin1['Nombre']).'</option>';
+                                } else{
+                                  echo '<option value="'.$rw_Admin1['Codigo'].'">'.utf8_encode($rw_Admin1['Nombre']).'</option>';	
+                                }     
+                              }
+                              echo '</select>';
+                            ?>	
+                          </div>
+                        </div>
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Tipo_Documento" class="control-label">Ciudad</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <input hidden type="Text" class="form-control " id="Ciu" name="Ciu" require value="<?php echo $Ciudad?>" readonly="readonly">
+                            <div  id="Ciudades" ></div>
+                          </div>
+                        </div>     
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-sm-2 offset-sm-1">
+                            <label for="Estado" class="control-label">Estado</label>
+                          </div>
+                          <div class="col-sm-8">
+                            <select name="Estado" id="Estado" class='form-control form-control-user'>
+                              <option value="Activo" <?php echo $Activo;?>>Activo</option>
+                              <option value="InActivo"<?php echo $InActivo;?>>InActivo</option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="" id="Resultado"></div>
+                        <div class=" pull-right col-sm-8 offset-sm-1">
+                          <button type="submit" class="btn btn-primary" >Guardar datos</button>			
+                          <button type="button" class="btn btn-danger"  onclick='Cancelar()'>Cancelar</button>
+                        </div>	
+                      </form>
                     </div>
-          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-            <div class="col-sm-2 offset-sm-1">
-						  <label for="Documento" class="control-label">Numero de Documento</label>
-					  </div>
-            <div class="col-sm-8">
-				  	  <input  type="text" class="form-control form-control-user"  onkeypress='return validaNumericos(event)' id="Documento" name="Documento" required placeholder="Numero de Documento" value="<?php echo $Documento; ?>" autocomplete='off'>
-					  </div>
-          </div>
-          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-            <div class="col-sm-2 offset-sm-1">
-						  <label for="Nombre" class="control-label">Nombre</label>
-					  </div>
-            <div class="col-sm-8">
-				  	  <input  type="text" class="form-control form-control-user"  id="Nombre" name="Nombre" required placeholder="Nombre " value="<?php echo $Nombre; ?>" autocomplete='off'>
-					  </div>
-          </div>
-          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-            <div class="col-sm-2 offset-sm-1">
-						  <label for="Telefono" class="control-label">Telefono</label>
-					  </div>
-            <div class="col-sm-8">
-				  	  <input type="text" class="form-control form-control-user"  onkeypress='return validaNumericos(event)' id="Telefono" name="Telefono" required placeholder="Telefono" value="<?php echo $Telefono; ?>" autocomplete='off'>
-					  </div>
-          </div>
-          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-            <div class="col-sm-2 offset-sm-1">
-						  <label for="Direccion" class="control-label">Direccion</label>
-					  </div>
-            <div class="col-sm-8">
-				  	  <input type="text" class="form-control form-control-user"   id="Direccion" name="Direccion" required placeholder="Direccion" value="<?php echo $Direccion; ?>" autocomplete='off'>
-					  </div>
-          </div>
-          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-            <div class="col-sm-2 offset-sm-1">
-						  <label for="Correo" class="control-label">Correo</label>
-					  </div>
-            <div class="col-sm-8">
-				  	  <input  type="email" class="form-control form-control-user"   id="Correo" name="Correo" required placeholder="Correo" value="<?php echo $Correo; ?>" autocomplete='off'>
-					  </div>
-          </div>
-          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-            <div class="col-sm-2 offset-sm-1">
-						  <label for="Tipo_Documento" class="control-label">Departamento</label>
-					  </div>
-            <div class="col-sm-8">
-            <?PHP
-				$query1=mysqli_query($con, "select * from DEPARTAMENTOS order by Nombre");
-				echo' <select class="form-control" id="Departamento" name ="Departamento" placeholder="Departamento" onchange="CargarCiudades()">';
-				while($rw_Admin1=mysqli_fetch_array($query1)){
-				if ($Departamento ==$rw_Admin1['Codigo']){
-					echo '<option value="'.$rw_Admin1['Codigo'].'" selected >'.utf8_encode($rw_Admin1['Nombre']).'</option>';
-				} else{
-				echo '<option value="'.$rw_Admin1['Codigo'].'">'.utf8_encode($rw_Admin1['Nombre']).'</option>';	
-				}
-				}
-				echo '</select>';
-				?>	
+                    <div class="tab-pane fade" id="pills-Procesos" role="tabpanel" aria-labelledby="pills-Procesos-tab">
+                      <div class="card mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'>Cotizaciones</h6>
+                          <div class="btn-group" style='float: right !important;'>
+                            <button type="button" class="btn btn-danger" onclick="location.href='Cotizacion.php?Cliente=<?php echo $Documento;?>';">
+                              <i class="fas fa-file"></i>  Nueva Cotizacion
+                            </button>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                        <table class="table table-hover table-sm" id="TablaCotizaciones" width="100%" cellspacing="0">
+                          <thead>
+                            <tr>
+                              <th>Numero</th>
+                              <th>Fecha</th>
+                              <th>Usuario</th>
+                              <th>Valor</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr style="cursor:pointer;" onclick=''>
+                              <td>1</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            <tr>
+                              <td>4</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            
 
-					  </div>
+                            
+                            
+                          </tbody>
+                        </table>
+                              
+                        </div>
+                      </div>
+                      <div class="card mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'>Ventas</h6>
+                          <div class="btn-group" style='float: right !important;'>
+                            <button type="button" class="btn btn-danger" onclick="location.href='Venta.php?Cliente=<?php echo $Documento;?>';">
+                              <i class="fas fa-file"></i>  Nueva Venta
+                            </button>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                        <table class="table table-hover table-sm" id="TablaVentas" width="100%" cellspacing="0">
+                          <thead>
+                            <tr>
+                              <th>Numero</th>
+                              <th>Fecha</th>
+                              <th>Usuario</th>
+                              <th>Valor</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr style="cursor:pointer;" onclick=''>
+                              <td>1</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            <tr>
+                              <td>4</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>$320,800</td>
+                            </tr>
+                            
+
+                            
+                            
+                          </tbody>
+                        </table>
+                              
+                        </div>
+                      </div>
+                      <div class="card mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'>Incidencias</h6>
+                          <div class="btn-group" style='float: right !important;'>
+                            <button type="button" class="btn btn-danger" onclick="location.href='Incidencia.php?Cliente=<?php echo $Documento;?>';">
+                              <i class="fas fa-file"></i>  Nueva Incidencia
+                            </button>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                        <table class="table table-hover table-sm" id="TablaIncidencias" width="100%" cellspacing="0">
+                          <thead>
+                            <tr>
+                              <th>Numero</th>
+                              <th>Fecha</th>
+                              <th>Usuario</th>
+                              <th>Estado</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr style="cursor:pointer;" onclick=''>
+                              <td>1</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>Pendiente</td>
+                            </tr>
+                            <tr>
+                              <td>2</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>Pendiente</td>
+                            </tr>
+                            <tr>
+                              <td>3</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>Pendiente</td>
+                            </tr>
+                            <tr>
+                              <td>4</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>Pendiente</td>
+                            </tr>
+                            <tr>
+                              <td>5</td>
+                              <td>01-01-2019</td>
+                              <td>Vendedor1</td>
+                              <td>Pendiente</td>
+                            </tr>
+                            
+
+                            
+                            
+                          </tbody>
+                        </table>
+                              
+                        </div>
+                      </div>
+                    </div>
+                  </div>  
+                </div>
+              </div>
+            </div>
           </div>
-            <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-                <div class="col-sm-2 offset-sm-1">
-				    <label for="Tipo_Documento" class="control-label">Ciudad</label>
-				</div>
-                <div class="col-sm-8">
-                    <input hidden type="Text" class="form-control " id="Ciu" name="Ciu" require value="<?php echo $Ciudad?>" readonly="readonly">
-					<div  id="Ciudades" >
-					</div>
-				</div>
-			</div>
-                
-                
-                
-          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-            <div class="col-sm-2 offset-sm-1">
-						  <label for="Estado" class="control-label">Estado</label>
-					  </div>
-            <div class="col-sm-8">
-				<select name="Estado" id="Estado" class='form-control form-control-user'>
-                    <option value="Activo" <?php echo $Activo;?>>Activo</option>
-                    <option value="InActivo"<?php echo $InActivo;?>>InActivo</option>
-              </select>
-			</div>
-          </div>
-          <div class="" id="Resultado">
-          
-          </div>
-          
-          <div class=" pull-right col-sm-8 offset-sm-1">
-            <button type="submit" class="btn btn-primary" >Guardar datos</button>			
-            <button type="button" class="btn btn-danger"  onclick='Cancelar()'>Cancelar</button>
-          </div>	
-        </form>
+        </div>
       </div>
-    </div>
-  </div>
-  
-
-  
-
-</div>
-
-</div>
-        <!-- /.container-fluid -->
-
-      </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
       <?php
         include('Footer.php');
       ?>
-      <!-- End of Footer -->
-
     </div>
-    <!-- End of Content Wrapper -->
-
   </div>
   <!-- End of Page Wrapper -->
 
@@ -281,8 +448,20 @@ if (isset($_GET['Documento'])) {
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin-2.min.js"></script>
+  <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+  <!-- Page level custom scripts -->
+  <script src="js/demo/datatables-demo.js"></script>
 
 <script>
+  $(document).ready( function () {
+    $('#TablaCotizaciones').DataTable();
+    $('#TablaIncidencias').DataTable();
+    $('#TablaVentas').DataTable();
+
+    
+} );
 function validaNumericos(event) {
     if(event.charCode >= 48 && event.charCode <= 57){
       return true;
