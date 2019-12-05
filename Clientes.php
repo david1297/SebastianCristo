@@ -251,52 +251,54 @@ if (isset($_GET['Documento'])) {
                           </div>
                         </div>
                         <div class="card-body">
-                        <table class="table table-hover table-sm" id="TablaCotizaciones" width="100%" cellspacing="0">
-                          <thead>
-                            <tr>
-                              <th>Numero</th>
-                              <th>Fecha</th>
-                              <th>Usuario</th>
-                              <th>Valor</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr style="cursor:pointer;" onclick=''>
-                              <td>1</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            <tr>
-                              <td>4</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            <tr>
-                              <td>5</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            
+                        <div class="table-responsive">
+                          <table class="table table-hover table-sm" id="TablaCotizaciones" width="100%" cellspacing="0">
+                            <thead>
+                              <tr>
+                                <th>Numero</th>
+                                <th>Fecha</th>
+                                <th>Usuario</th>
+                                <th>Valor</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr style="cursor:pointer;" onclick=''>
+                                <td>1</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              <tr>
+                                <td>2</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              <tr>
+                                <td>3</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              <tr>
+                                <td>4</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              <tr>
+                                <td>5</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              
 
-                            
-                            
-                          </tbody>
-                        </table>
+                              
+                              
+                            </tbody>
+                          </table>
+                        </div>
                               
                         </div>
                       </div>
@@ -310,52 +312,54 @@ if (isset($_GET['Documento'])) {
                           </div>
                         </div>
                         <div class="card-body">
-                        <table class="table table-hover table-sm" id="TablaVentas" width="100%" cellspacing="0">
-                          <thead>
-                            <tr>
-                              <th>Numero</th>
-                              <th>Fecha</th>
-                              <th>Usuario</th>
-                              <th>Valor</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr style="cursor:pointer;" onclick=''>
-                              <td>1</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            <tr>
-                              <td>4</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            <tr>
-                              <td>5</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>$320,800</td>
-                            </tr>
-                            
+                        <div class="table-responsive">
+                          <table class="table table-hover table-sm" id="TablaVentas" width="100%" cellspacing="0">
+                            <thead>
+                              <tr>
+                                <th>Numero</th>
+                                <th>Fecha</th>
+                                <th>Usuario</th>
+                                <th>Valor</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr style="cursor:pointer;" onclick=''>
+                                <td>1</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              <tr>
+                                <td>2</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              <tr>
+                                <td>3</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              <tr>
+                                <td>4</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              <tr>
+                                <td>5</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>$320,800</td>
+                              </tr>
+                              
 
-                            
-                            
-                          </tbody>
-                        </table>
+                              
+                              
+                            </tbody>
+                          </table>
+                        </div>
                               
                         </div>
                       </div>
@@ -369,53 +373,55 @@ if (isset($_GET['Documento'])) {
                           </div>
                         </div>
                         <div class="card-body">
-                        <table class="table table-hover table-sm" id="TablaIncidencias" width="100%" cellspacing="0">
-                          <thead>
-                            <tr>
-                              <th>Numero</th>
-                              <th>Fecha</th>
-                              <th>Usuario</th>
-                              <th>Estado</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr style="cursor:pointer;" onclick=''>
-                              <td>1</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>Pendiente</td>
-                            </tr>
-                            <tr>
-                              <td>2</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>Pendiente</td>
-                            </tr>
-                            <tr>
-                              <td>3</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>Pendiente</td>
-                            </tr>
-                            <tr>
-                              <td>4</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>Pendiente</td>
-                            </tr>
-                            <tr>
-                              <td>5</td>
-                              <td>01-01-2019</td>
-                              <td>Vendedor1</td>
-                              <td>Pendiente</td>
-                            </tr>
-                            
-
-                            
-                            
-                          </tbody>
-                        </table>
+                        <div class="table-responsive">
+                          <table class="table table-hover table-sm" id="TablaIncidencias" width="100%" cellspacing="0">
+                            <thead>
+                              <tr>
+                                <th>Numero</th>
+                                <th>Fecha</th>
+                                <th>Usuario</th>
+                                <th>Estado</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr style="cursor:pointer;" onclick=''>
+                                <td>1</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>Pendiente</td>
+                              </tr>
+                              <tr>
+                                <td>2</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>Pendiente</td>
+                              </tr>
+                              <tr>
+                                <td>3</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>Pendiente</td>
+                              </tr>
+                              <tr>
+                                <td>4</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>Pendiente</td>
+                              </tr>
+                              <tr>
+                                <td>5</td>
+                                <td>01-01-2019</td>
+                                <td>Vendedor1</td>
+                                <td>Pendiente</td>
+                              </tr>
                               
+
+                              
+                              
+                            </tbody>
+                          </table>
+                              
+                        </div>
                         </div>
                       </div>
                     </div>
