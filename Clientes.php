@@ -1,0 +1,337 @@
+<?php
+	session_start();
+	if (!isset($_SESSION['user_login_status']) AND $_SESSION['user_login_status'] != 1) {
+        header("location: login.php");
+		exit;
+        }
+	require_once ("config/db.php");
+	require_once ("config/conexion.php");
+$Documento='';
+$Tipo_Documento='';
+$Tipo_Persona='';
+$Nombre='';
+$Telefono='';
+$Correo=''; 
+$FechaCreacion =date("Y-m-d");
+$Estado='';
+$Ciudad='';
+$Direccion='';
+$Departamento='';
+$Activo='';
+$InActivo='';
+$Natural='';
+$Juridica='';
+$Cedula='';
+        $Pasaporte='';
+        $Nit='';
+        $Extrangera='';
+if (isset($_GET['Documento'])) {
+
+
+    $query=mysqli_query($con, "select Clientes.Documento,Clientes.Tipo_Documento,Clientes.Tipo_Persona,Clientes.Nombre,Clientes.Telefono,
+    Clientes.Correo,Clientes.FechaCreacion,Clientes.Estado,Clientes.Ciudad,Clientes.Direccion,Ciudades.Departamento from Clientes 
+    inner join Ciudades on Clientes.Ciudad = Ciudades.Codigo
+    where Documento ='".$_GET['Documento']."' ");
+        $rw_Admin=mysqli_fetch_array($query);
+    
+        $Documento=$rw_Admin['Documento'];
+        $Tipo_Documento=$rw_Admin['Tipo_Documento'];
+        $Tipo_Persona=$rw_Admin['Tipo_Persona'];
+        $Nombre=$rw_Admin['Nombre'];
+        $Telefono=$rw_Admin['Telefono'];
+        $Correo=$rw_Admin['Correo'];
+        $FechaCreacion=$rw_Admin['FechaCreacion'];
+        $Estado=$rw_Admin['Estado'];
+        $Ciudad=$rw_Admin['Ciudad'];
+        $Direccion=$rw_Admin['Direccion'];
+        $Departamento=$rw_Admin['Departamento'];
+     
+        $Cedula='';
+        $Pasaporte='';
+        $Nit='';
+        $Extrangera='';
+        if ($Tipo_Documento=='Cedula'){
+          $Cedula = 'selected';
+        }else{
+          if ($Tipo_Documento=='Pasaporte'){
+            $Pasaporte = 'selected';
+          }else{
+            if ($Tipo_Documento=='Nit'){
+              $Nit = 'selected';
+            }else{
+              if ($Tipo_Documento=='Extrangera'){
+                $Extrangera = 'selected';
+              }
+            }
+          }
+        }
+        if($Estado =='Activo'){
+            $Activo='selected';
+        }else{
+            $InActivo='selected';
+        }
+        if($Tipo_Persona='Natural'){
+            $Natural='selected';
+        }else{
+            $Juridica='selected';
+        }
+        $EstadoC="Editando";
+		$Read= "readonly='readonly'";
+
+}else{
+    $EstadoC="Nuevo";
+    $Read= "";
+}
+
+         
+    
+    
+?>
+<!DOCTYPE html>
+<html lang="es">
+  <?php
+    include('Head.php')
+  ?>
+  <body id="page-top" onload="Cargar()">
+    <div id="wrapper">
+      <?php
+        include('Menu.php');
+      ?>
+      <div class="container-fluid">
+
+<div class="row" >
+    <div class="col-xl-12 col-lg-12">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary" style='float: left !important;'>Clientes</h6>
+                <div class="btn-group" style='float: right !important;'>
+                    <button type="button" class="btn btn-danger" onclick="location.href='ConsultarClientes.php';">
+                        <span class="fas fa-user-tie"></span> Consultar Clientes
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+                <form   id="Guardar_Cliente" name="Guardar_Cliente" class="form-horizontal col-sm-12" method="post">
+                <input type="text" class="form-control " hidden id="EstadoC" name="EstadoC"  value="<?php echo $EstadoC; ?>" >
+                
+                <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                    <div class="col-sm-2 offset-sm-1">
+						  <label for="Documento" class="control-label">Fecha de Creacion</label>
+					  </div>
+                    <div class="col-sm-8">      
+                    <input type="Date" class="form-control" id="FechaCreacion" name="FechaCreacion" value="<?php echo $FechaCreacion?>"readonly>
+					</div>
+                </div>
+                <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                        <div class="col-sm-2 offset-sm-1">
+						    <label for="Tipo_Documento" class="control-label">Tipo de Documento</label>
+					    </div>
+                        <div class="col-sm-8">
+                            <select name="Tipo_Documento" id="Tipo_Documento" class='form-control form-control-user'>
+                                <option value="Cedula" <?php echo $Cedula;?>>Cedula de Ciudadania</option>
+                                <option value="Pasaporte"<?php echo $Pasaporte;?>>Pasaporte</option>
+                                <option value="Nit" <?php echo $Nit;?>>Nit</option>
+                                <option value="Extrangera" <?php echo $Extrangera;?>>Cedula Extrangera</option>
+                            </select>
+					    </div>
+                    </div>
+                    <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                        <div class="col-sm-2 offset-sm-1">
+						    <label for="Tipo_Persona" class="control-label">Tipo de Persona</label>
+					    </div>
+                        <div class="col-sm-8">
+                            <select name="Tipo_Persona" id="Tipo_Persona" class='form-control form-control-user'>
+                                <option value="Natural" <?php echo $Natural;?>>Natural</option>
+                                <option value="Juridica"<?php echo $Juridica;?>>Juridica</option>
+                            </select>
+					    </div>
+                    </div>
+          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+            <div class="col-sm-2 offset-sm-1">
+						  <label for="Documento" class="control-label">Numero de Documento</label>
+					  </div>
+            <div class="col-sm-8">
+				  	  <input  type="text" class="form-control form-control-user"  onkeypress='return validaNumericos(event)' id="Documento" name="Documento" required placeholder="Numero de Documento" value="<?php echo $Documento; ?>" autocomplete='off'>
+					  </div>
+          </div>
+          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+            <div class="col-sm-2 offset-sm-1">
+						  <label for="Nombre" class="control-label">Nombre</label>
+					  </div>
+            <div class="col-sm-8">
+				  	  <input  type="text" class="form-control form-control-user"  id="Nombre" name="Nombre" required placeholder="Nombre " value="<?php echo $Nombre; ?>" autocomplete='off'>
+					  </div>
+          </div>
+          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+            <div class="col-sm-2 offset-sm-1">
+						  <label for="Telefono" class="control-label">Telefono</label>
+					  </div>
+            <div class="col-sm-8">
+				  	  <input type="text" class="form-control form-control-user"  onkeypress='return validaNumericos(event)' id="Telefono" name="Telefono" required placeholder="Telefono" value="<?php echo $Telefono; ?>" autocomplete='off'>
+					  </div>
+          </div>
+          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+            <div class="col-sm-2 offset-sm-1">
+						  <label for="Direccion" class="control-label">Direccion</label>
+					  </div>
+            <div class="col-sm-8">
+				  	  <input type="text" class="form-control form-control-user"   id="Direccion" name="Direccion" required placeholder="Direccion" value="<?php echo $Direccion; ?>" autocomplete='off'>
+					  </div>
+          </div>
+          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+            <div class="col-sm-2 offset-sm-1">
+						  <label for="Correo" class="control-label">Correo</label>
+					  </div>
+            <div class="col-sm-8">
+				  	  <input  type="email" class="form-control form-control-user"   id="Correo" name="Correo" required placeholder="Correo" value="<?php echo $Correo; ?>" autocomplete='off'>
+					  </div>
+          </div>
+          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+            <div class="col-sm-2 offset-sm-1">
+						  <label for="Tipo_Documento" class="control-label">Departamento</label>
+					  </div>
+            <div class="col-sm-8">
+            <?PHP
+				$query1=mysqli_query($con, "select * from DEPARTAMENTOS order by Nombre");
+				echo' <select class="form-control" id="Departamento" name ="Departamento" placeholder="Departamento" onchange="CargarCiudades()">';
+				while($rw_Admin1=mysqli_fetch_array($query1)){
+				if ($Departamento ==$rw_Admin1['Codigo']){
+					echo '<option value="'.$rw_Admin1['Codigo'].'" selected >'.utf8_encode($rw_Admin1['Nombre']).'</option>';
+				} else{
+				echo '<option value="'.$rw_Admin1['Codigo'].'">'.utf8_encode($rw_Admin1['Nombre']).'</option>';	
+				}
+				}
+				echo '</select>';
+				?>	
+
+					  </div>
+          </div>
+            <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                <div class="col-sm-2 offset-sm-1">
+				    <label for="Tipo_Documento" class="control-label">Ciudad</label>
+				</div>
+                <div class="col-sm-8">
+                    <input hidden type="Text" class="form-control " id="Ciu" name="Ciu" require value="<?php echo $Ciudad?>" readonly="readonly">
+					<div  id="Ciudades" >
+					</div>
+				</div>
+			</div>
+                
+                
+                
+          <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+            <div class="col-sm-2 offset-sm-1">
+						  <label for="Estado" class="control-label">Estado</label>
+					  </div>
+            <div class="col-sm-8">
+				<select name="Estado" id="Estado" class='form-control form-control-user'>
+                    <option value="Activo" <?php echo $Activo;?>>Activo</option>
+                    <option value="InActivo"<?php echo $InActivo;?>>InActivo</option>
+              </select>
+			</div>
+          </div>
+          <div class="" id="Resultado">
+          
+          </div>
+          
+          <div class=" pull-right col-sm-8 offset-sm-1">
+            <button type="submit" class="btn btn-primary" >Guardar datos</button>			
+            <button type="button" class="btn btn-danger"  onclick='Cancelar()'>Cancelar</button>
+          </div>	
+        </form>
+      </div>
+    </div>
+  </div>
+  
+
+  
+
+</div>
+
+</div>
+        <!-- /.container-fluid -->
+
+      </div>
+      <!-- End of Main Content -->
+
+      <!-- Footer -->
+      <?php
+        include('Footer.php');
+      ?>
+      <!-- End of Footer -->
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+  </div>
+  <!-- End of Page Wrapper -->
+
+  <!-- Scroll to Top Button-->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+ 
+  <!-- Bootstrap core JavaScript-->
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="js/sb-admin-2.min.js"></script>
+
+<script>
+function validaNumericos(event) {
+    if(event.charCode >= 48 && event.charCode <= 57){
+      return true;
+     }
+     return false;        
+}
+function Cargar() {
+			CargarCiudades();
+		}
+$( "#Guardar_Cliente" ).submit(function( event ) {
+ 		var parametros = $(this).serialize();
+	 	$.ajax({
+			type: "POST",
+			url: "Componentes/Ajax/Guardar_Cliente.php",
+			data: parametros,
+			 beforeSend: function(objeto){
+				$("#Resultado").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
+			  },
+			success: function(datos){
+			$("#Resultado").html(datos);
+			
+		  }
+	});
+  event.preventDefault();
+})
+function CargarCiudades(){
+			var Depto = $("#Departamento").val();
+			
+			var Ciu = $("#Ciu").val();
+			$.ajax({
+				type: "POST",
+				url: "Componentes/Ajax/Cargar_Ciudades.php",
+				data: "Depto="+Depto+"&Ciu="+Ciu,
+				beforeSend: function(objeto){
+                    $("#Ciudades").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
+				},success: function(datos){
+					$("#Ciudades").html(datos);
+				}	
+			});
+        }
+function Cancelar(){
+    var Estado=$('#EstadoC').val();
+    if(Estado=='Nuevo'){
+        location.href='ConsultarClientes.php';
+    }else{
+        location.reload();
+    }
+}
+</script>
+</body>
+
+</html>
