@@ -42,10 +42,10 @@ order by Citas.Fecha asc
 <!-- DataTales Example -->
 <div class="card shadow mb-4">
   <div class="card-header py-3">
-    <h6 class="m-0 font-weight-bold text-primary" style='float: left !important;'>Clientes</h6>
+    <h6 class="m-0 font-weight-bold text-primary" style='float: left !important;'>Citas</h6>
         <div class="btn-group" style='float: right !important;'>
-		    <button type="button" class="btn btn-danger" onclick="NuevoCliente()">
-				<span class="fas fa-user-tie"></span> Nuevo Cliente
+		    <button type="button" class="btn btn-danger" onclick="NuevaCita()">
+				<span class="fas fa-user-tie"></span> Nueva Cita
 			</button>
 		</div>
   </div>
@@ -138,7 +138,7 @@ order by Citas.Fecha asc
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+  <script src="js/sb-admin-2.js"></script>
 
   <!-- Page level plugins -->
   <script src="vendor/datatables/jquery.dataTables.min.js"></script>
@@ -153,10 +153,10 @@ function validaNumericos(event) {
      }
      return false;        
 }
-function EditarCita(Documento){
-    location.href='Citas.php?Documento='+Documento;
+function EditarCita(Numero){
+    location.href='Citas.php?Numero='+Numero;
 }
-function NuevoCliente(){
+function NuevaCita(){
     location.href='Citas.php';
 }
 </script>

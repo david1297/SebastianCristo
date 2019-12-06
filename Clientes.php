@@ -79,6 +79,7 @@ if (isset($_GET['Documento'])) {
 		$Read= "readonly='readonly'";
 
 }else{
+  $Procesos='disabled';
     $EstadoC="Nuevo";
     $Read= "";
 }
@@ -115,7 +116,7 @@ if (isset($_GET['Documento'])) {
                       <a class="nav-link active" id="pills-Datos-tab" data-toggle="pill" href="#pills-Datos" role="tab" aria-controls="pills-Datos" aria-selected="true">Datos</a>
                     </li>
                     <li class="nav-item">
-                      <a class="nav-link" id="pills-Procesos-tab" data-toggle="pill" href="#pills-Procesos" role="tab" aria-controls="pills-Procesos" aria-selected="false">Procesos</a>
+                      <a class="nav-link <?php echo $Procesos;?>" id="pills-Procesos-tab" data-toggle="pill" href="#pills-Procesos" role="tab" aria-controls="pills-Procesos" aria-selected="false">Procesos</a>
                     </li>
                   </ul>
                   <div class="tab-content" id="pills-tabContent">
@@ -373,55 +374,114 @@ if (isset($_GET['Documento'])) {
                           </div>
                         </div>
                         <div class="card-body">
-                        <div class="table-responsive">
-                          <table class="table table-hover table-sm" id="TablaIncidencias" width="100%" cellspacing="0">
-                            <thead>
-                              <tr>
-                                <th>Numero</th>
-                                <th>Fecha</th>
-                                <th>Usuario</th>
-                                <th>Estado</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr style="cursor:pointer;" onclick=''>
-                                <td>1</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>Pendiente</td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>Pendiente</td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>Pendiente</td>
-                              </tr>
-                              <tr>
-                                <td>4</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>Pendiente</td>
-                              </tr>
-                              <tr>
-                                <td>5</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>Pendiente</td>
-                              </tr>
-                              
-
-                              
-                              
-                            </tbody>
-                          </table>
-                              
+                          <div class="table-responsive">
+                            <table class="table table-hover table-sm" id="TablaIncidencias" width="100%" cellspacing="0">
+                              <thead>
+                                <tr>
+                                  <th>Numero</th>
+                                  <th>Fecha</th>
+                                  <th>Usuario</th>
+                                  <th>Estado</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr style="cursor:pointer;" onclick=''>
+                                  <td>1</td>
+                                  <td>01-01-2019</td>
+                                  <td>Vendedor1</td>
+                                  <td>Pendiente</td>
+                                </tr>
+                                <tr>
+                                  <td>2</td>
+                                  <td>01-01-2019</td>
+                                  <td>Vendedor1</td>
+                                  <td>Pendiente</td>
+                                </tr>
+                                <tr>
+                                  <td>3</td>
+                                  <td>01-01-2019</td>
+                                  <td>Vendedor1</td>
+                                  <td>Pendiente</td>
+                                </tr>
+                                <tr>
+                                  <td>4</td>
+                                  <td>01-01-2019</td>
+                                  <td>Vendedor1</td>
+                                  <td>Pendiente</td>
+                                </tr>
+                                <tr>
+                                  <td>5</td>
+                                  <td>01-01-2019</td>
+                                  <td>Vendedor1</td>
+                                  <td>Pendiente</td>
+                                </tr>    
+                              </tbody>
+                            </table>  
+                          </div>
                         </div>
+                      </div>
+                      <div class="card mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'>Citas</h6>
+                          <div class="btn-group" style='float: right !important;'>
+                            <button type="button" class="btn btn-danger" onclick="location.href='Citas.php?Cliente=<?php echo $Documento;?>';">
+                              <i class="fas fa-file"></i>  Nueva Cita
+                            </button>
+                          </div>
+                        </div>
+                        <?php 
+                        $query=mysqli_query($con, "select Citas.Numero,Citas.Fecha,Citas.Hora,Citas.Descripcion,
+                        Usuarios.Nombre_Completo,Citas.Estado
+                        
+                        from Citas 
+                        inner join Usuarios on Usuarios.Identificacion = Citas.Usuario 
+                        inner join Clientes on Clientes.Documento = Citas.Cliente
+                        order by Citas.Fecha,Citas.Hora  asc
+                        "); 
+                        ?>
+                        <div class="card-body">
+                          <div class="table-responsive">
+                            <table class="table table-hover table-sm" id="TablaCitas" width="100%" cellspacing="0">
+                              <thead>
+                                <tr>
+                                  <th>Numero</th>
+                                  <th>Fecha</th>
+                                  <th>Hora</th>
+                                  <th>Usuario</th>
+                                  <th>Estado</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <?php
+                                while($rw_Admin=mysqli_fetch_array($query)){
+                                    $Numero=$rw_Admin['Numero'];
+                                    $Fecha=$rw_Admin['Fecha'];
+                                    $Hora=$rw_Admin['Hora'];
+                                    $Usuario=$rw_Admin['Nombre_Completo'];
+                                 
+                                    $Estado=$rw_Admin['Estado'];
+                                  
+                                    ?>
+                                  
+                                    <tr style="cursor:pointer;" onclick='EditarCita("<?php echo  $Numero;?>")'>
+                                          <td><?php echo  $Numero;?></td>
+                                          <td><?php echo  $Fecha;?></td>
+                                          <td><?php echo  $Hora;?></td>
+                                          <td><?php echo  $Usuario;?></td>
+                               
+                                          <td><?php echo  $Estado;?></td>
+                                        </tr>
+                                  
+                                  
+                                    <?php
+                                    }
+
+                                
+                                
+                                ?>
+                              </tbody>
+                            </table>  
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -453,7 +513,7 @@ if (isset($_GET['Documento'])) {
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="js/sb-admin-2.min.js"></script>
+  <script src="js/sb-admin-2.js"></script>
   <script src="vendor/datatables/jquery.dataTables.min.js"></script>
   <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
@@ -465,9 +525,14 @@ if (isset($_GET['Documento'])) {
     $('#TablaCotizaciones').DataTable();
     $('#TablaIncidencias').DataTable();
     $('#TablaVentas').DataTable();
+    $('#TablaCitas').DataTable();
+    
 
     
 } );
+function EditarCita(Numero){
+    location.href='Citas.php?Numero='+Numero;
+}
 function validaNumericos(event) {
     if(event.charCode >= 48 && event.charCode <= 57){
       return true;
@@ -487,6 +552,7 @@ $( "#Guardar_Cliente" ).submit(function( event ) {
 				$("#Resultado").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
 			  },
 			success: function(datos){
+        $('#pills-Procesos-tab').removeClass('disabled');
 			$("#Resultado").html(datos);
 			
 		  }
