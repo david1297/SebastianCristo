@@ -18,7 +18,7 @@ $Direccion ='';
 $Estado='';
 $Nombre_Completo=$_SESSION['Nombre_Completo'];
 $Nombre='';
-
+$Asignado='';
 $Programada='';
 $Cancelada='';
 $Realizada='';
@@ -26,7 +26,7 @@ $Realizada='';
 if (isset($_GET['Numero'])) {
 
 
-    $query=mysqli_query($con, "select Citas.Respuesta,Citas.Numero,Citas.Fecha,Citas.FechaCreacion,Citas.Hora,Citas.Cliente,Citas.Usuario,Citas.Descripcion,Citas.Direccion,
+    $query=mysqli_query($con, "select Citas.Asignado,Citas.Respuesta,Citas.Numero,Citas.Fecha,Citas.FechaCreacion,Citas.Hora,Citas.Cliente,Citas.Usuario,Citas.Descripcion,Citas.Direccion,
     Citas.Estado,Usuarios.Nombre_Completo,Clientes.Nombre from Citas 
     inner join Usuarios on Usuarios.Identificacion = Citas.Usuario
     inner join Clientes on Clientes.Documento = Citas.Cliente
@@ -46,6 +46,8 @@ if (isset($_GET['Numero'])) {
         $Estado=$rw_Admin['Estado'];
         $Nombre_Completo=$rw_Admin['Nombre_Completo'];
         $Nombre=$rw_Admin['Nombre'];
+        $Asignado=$rw_Admin['Asignado'];
+        
      
         if($Estado =='Programada'){
             $Programada='selected';
@@ -117,21 +119,21 @@ if (isset($_GET['Numero'])) {
                     <tbody>
                         <?php
                         while($rw_Admin=mysqli_fetch_array($query)){
-                            $Documento=$rw_Admin['Documento'];
-                            $Nombre=$rw_Admin['Nombre'];
-                            $Telefono=$rw_Admin['Telefono'];
-                            $Correo=$rw_Admin['Correo'];
-                            $Direccion=$rw_Admin['Direccion'];
-                            $Correo=$rw_Admin['Correo'];
-                            $Ciudad=$rw_Admin['Ciudad'];
+                            $CDocumento=$rw_Admin['Documento'];
+                            $CNombre=$rw_Admin['Nombre'];
+                            $CTelefono=$rw_Admin['Telefono'];
+                            $CCorreo=$rw_Admin['Correo'];
+                            $CDireccion=$rw_Admin['Direccion'];
+                            $CCorreo=$rw_Admin['Correo'];
+                            $CCiudad=$rw_Admin['Ciudad'];
                             ?>
                           
-                            <tr style="cursor:pointer;" onclick='CargarCliente("<?php echo  $Documento;?>")'>
-                                  <td><?php echo  $Documento;?></td>
-                                  <td><?php echo  $Nombre;?></td>
-                                  <td><?php echo  $Telefono;?></td>
-                                  <td><?php echo  $Correo;?></td>
-                                  <td><?php echo  $Ciudad;?></td>
+                            <tr style="cursor:pointer;" onclick='CargarCliente("<?php echo  $CDocumento;?>","<?php echo  $CNombre;?>","<?php echo  $CDireccion;?>")'>
+                                  <td><?php echo  $CDocumento;?></td>
+                                  <td><?php echo  $CNombre;?></td>
+                                  <td><?php echo  $CTelefono;?></td>
+                                  <td><?php echo  $CCorreo;?></td>
+                                  <td><?php echo  $CCiudad;?></td>
                                 </tr>
                             <?php
                             }
@@ -183,7 +185,7 @@ if (isset($_GET['Numero'])) {
                               <input type="text" class="form-control" placeholder="Cliente" name="NCliente" id="NCliente" value="<?php echo $Nombre?>">
                               <input hidden type="text" class="form-control" placeholder="Cliente" name="Cliente" id="Cliente" value="<?php echo $Cliente?>">
                               <div class="input-group-append">
-                                <button class="btn btn-outline-secondary" type="button" id="button-addon2" data-toggle="modal" data-target="#BuscarCliente">
+                                <button class="btn  btn-info" type="button" id="button-addon2" data-toggle="modal" data-target="#BuscarCliente">
                                 <i class="fas fa-search"></i>
                                 </button>
                               </div>
@@ -206,6 +208,28 @@ if (isset($_GET['Numero'])) {
                               <option value="Programada" <?php echo $Programada;?>>Programada</option>
                               <option value="Cancelada"<?php echo $Cancelada;?>>Cancelada</option>
                               <option value="Realizada"<?php echo $Realizada;?>>Realizada</option>
+                            </select>
+                          </div>
+                          <div class="col-sm-2">
+                            <label for="Asignado" class="control-label">Asignado A:</label>
+                            <select name="Asignado" id="Asignado" class='form-control form-control-user'>
+                              <?php
+                              $query=mysqli_query($con, "select Nombre_Completo,Identificacion from Usuarios  where Rol=3 or Rol=4 "); 
+                              while($rw_Admin=mysqli_fetch_array($query)){
+                                $Nombre_Completo=$rw_Admin['Nombre_Completo'];
+                                $Identificacion=$rw_Admin['Identificacion'];
+                                if ($Identificacion==$Asignado){
+                                  $SAsignado='selected';
+                                }else{
+                                  $SAsignado='';
+                                }
+                                ?>
+                              
+                                <option value="<?php echo $Identificacion;?>" <?php echo $SAsignado;?>><?php echo $Nombre_Completo;?></option>
+                                
+                                <?php
+                              }
+                              ?>
                             </select>
                           </div>
                         </div>
@@ -273,6 +297,13 @@ if (isset($_GET['Numero'])) {
 
     
 } );
+function CargarCliente(Documento,Nombre,Direccion){
+$('#Cliente').val(Documento);
+$('#NCliente').val(Nombre);
+$('#Direccion').val(Direccion); 
+$('#BuscarCliente').modal("hide");
+
+}
 function validaNumericos(event) {
     if(event.charCode >= 48 && event.charCode <= 57){
       return true;
@@ -298,25 +329,10 @@ $( "#Guardar_Cita" ).submit(function( event ) {
 	});
   event.preventDefault();
 })
-function CargarCiudades(){
-			var Depto = $("#Departamento").val();
-			
-			var Ciu = $("#Ciu").val();
-			$.ajax({
-				type: "POST",
-				url: "Componentes/Ajax/Cargar_Ciudades.php",
-				data: "Depto="+Depto+"&Ciu="+Ciu,
-				beforeSend: function(objeto){
-                    $("#Ciudades").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
-				},success: function(datos){
-					$("#Ciudades").html(datos);
-				}	
-			});
-        }
 function Cancelar(){
     var Estado=$('#EstadoC').val();
     if(Estado=='Nuevo'){
-        location.href='ConsultarClientes.php';
+        location.href='ConsultarCitas.php';
     }else{
         location.reload();
     }

@@ -16,6 +16,8 @@ if (empty($_POST['Fecha'])){
 	$errors[] = "Direccion";
 }elseif (empty($_POST['Estado'])){
 	$errors[] = "Estado";
+}elseif (empty($_POST['Asignado'])){
+	$errors[] = "Asignado";
 }elseif (
 			!empty($_POST['Fecha'])
 			&& !empty($_POST['FechaCreacion'])
@@ -25,6 +27,7 @@ if (empty($_POST['Fecha'])){
 			&& !empty($_POST['Descripcion'])
 			&& !empty($_POST['Direccion'])
 			&& !empty($_POST['Estado'])
+			&& !empty($_POST['Asignado'])
           )
          {
             require_once ("../../config/db.php");
@@ -39,6 +42,7 @@ if (empty($_POST['Fecha'])){
 				$Respuesta = mysqli_real_escape_string($con,(strip_tags($_POST["Respuesta"],ENT_QUOTES)));
 				$Direccion = mysqli_real_escape_string($con,(strip_tags($_POST["Direccion"],ENT_QUOTES)));
 				$Estado = mysqli_real_escape_string($con,(strip_tags($_POST["Estado"],ENT_QUOTES)));
+				$Asignado = mysqli_real_escape_string($con,(strip_tags($_POST["Asignado"],ENT_QUOTES)));
                 
 				if (isset($_POST['Numero'])) {
 					$Numero = mysqli_real_escape_string($con,(strip_tags($_POST["Numero"],ENT_QUOTES)));	
@@ -54,14 +58,14 @@ if (empty($_POST['Fecha'])){
 				
                
 				
-				$sql =  "INSERT INTO  Citas(Numero,Fecha,Hora,Cliente,Usuario,Descripcion,Direccion,Estado,FechaCreacion,Respuesta) VALUES
+				$sql =  "INSERT INTO  Citas(Numero,Fecha,Hora,Cliente,Usuario,Descripcion,Direccion,Estado,FechaCreacion,Respuesta,Asignado) VALUES
 
 				('$NumeroCita', '".$Fecha."', '".$Hora."', '".$Cliente."', '".$Usuario."','".$Descripcion."',
-				 '".$Direccion."','".$Estado."','".$FechaCreacion."','".$Respuesta."'
+				 '".$Direccion."','".$Estado."','".$FechaCreacion."','".$Respuesta."','$Asignado'
 				) ON DUPLICATE  KEY UPDATE
 				Fecha = '".$Fecha."',Hora ='".$Hora."',Cliente='".$Cliente."',Usuario='".$Usuario."'
 				,Descripcion='".$Descripcion."'
-				,Direccion='".$Direccion."',Estado='".$Estado."',FechaCreacion='".$FechaCreacion."',Respuesta='".$Respuesta."';";
+				,Direccion='".$Direccion."',Estado='".$Estado."',FechaCreacion='".$FechaCreacion."',Respuesta='".$Respuesta."',Asignado='$Asignado';";
 
                     $query_update = mysqli_query($con,$sql);
                     if ($query_update) {

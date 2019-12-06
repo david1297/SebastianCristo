@@ -434,8 +434,9 @@ if (isset($_GET['Documento'])) {
                         Usuarios.Nombre_Completo,Citas.Estado
                         
                         from Citas 
-                        inner join Usuarios on Usuarios.Identificacion = Citas.Usuario 
+                        inner join Usuarios on Usuarios.Identificacion = Citas.Asignado 
                         inner join Clientes on Clientes.Documento = Citas.Cliente
+                        where Citas.Cliente = '$Documento'
                         order by Citas.Fecha,Citas.Hora  asc
                         "); 
                         ?>

@@ -21,7 +21,7 @@ $query=mysqli_query($con, "select Citas.Numero,Citas.Fecha,Citas.Hora,Citas.Desc
 Usuarios.Nombre_Completo,Clientes.Nombre,Citas.Estado
 
 from Citas 
-inner join Usuarios on Usuarios.Identificacion = Citas.Usuario 
+inner join Usuarios on Usuarios.Identificacion = Citas.Asignado 
 inner join Clientes on Clientes.Documento = Citas.Cliente
 order by Citas.Fecha asc
 "); 
