@@ -73,6 +73,50 @@ where Identificacion ='".$_SESSION['Identificacion']."' ");
       ?>
       <div class="container-fluid">
 
+      <div class="modal fade " id="CambiarPass" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog Modal-smal" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              <form class="form-horizontal" method="post" id="editar_password" name="editar_password">
+			<div id="resultados_ajax3"></div>
+			 
+			 
+			 
+			 
+			  <div class="form-group">
+				<label for="user_password_new3" class="col-sm-4 control-label">Nueva contraseña</label>
+				<div class="col-sm-8">
+				  <input type="password" class="form-control" id="user_password_new3" name="user_password_new3" placeholder="Nueva contraseña" pattern=".{6,}" title="Contraseña ( min . 6 caracteres)" required>
+					<input type="text" hidden id="user_id_mod" name="user_id_mod" value="<?php echo $Identificacion; ?>">
+				</div>
+			  </div>
+			  <div class="form-group">
+				<label for="user_password_repeat3" class="col-sm-4 control-label">Repite contraseña</label>
+				<div class="col-sm-8">
+				  <input type="password" class="form-control" id="user_password_repeat3" name="user_password_repeat3" placeholder="Repite contraseña" pattern=".{6,}" required>
+				</div>
+			  </div>
+			 
+			  
+
+			 
+			 
+			
+		  </div>
+      <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			<button type="submit" class="btn btn-primary" id="actualizar_datos3">Cambiar contraseña</button>
+		  </div>
+		  </form>
+            </div>
+          </div>
+      </div>
 <div class="row" >
   <div class="col-xl-12 col-lg-12">
     <div class="card shadow mb-4">
@@ -176,6 +220,11 @@ where Identificacion ='".$_SESSION['Identificacion']."' ");
           <div class="" id="Resultado">
           
           </div>
+          <div class="form-group col-sm-8">
+												<div class="col-sm-8 col-md-offset-3">
+													<button type="button"  class="btn btn-primary"  data-toggle="modal" data-target="#CambiarPass">Cambiar Contraseña</button>
+												</div>
+											</div>
           
           <div class=" pull-right col-sm-8 offset-sm-1">
             <button type="submit" class="btn btn-primary" >Guardar datos</button>			
@@ -243,6 +292,26 @@ $( "#Actualizar_Perfil" ).submit(function( event ) {
 			  },
 			success: function(datos){
 			$("#Resultado").html(datos);
+			
+		  }
+	});
+  event.preventDefault();
+})
+
+$( "#editar_password" ).submit(function( event ) {
+  $('#actualizar_datos3').attr("disabled", true);
+  
+ var parametros = $(this).serialize();
+	 $.ajax({
+			type: "POST",
+			url: "Componentes/Ajax/editar_password.php",
+			data: parametros,
+			 beforeSend: function(objeto){
+				$("#Resultado").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
+			  },
+			success: function(datos){
+			$("#Resultado").html(datos);
+      $('#actualizar_datos3').attr("disabled", false);
 			
 		  }
 	});

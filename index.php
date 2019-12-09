@@ -37,8 +37,23 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">GANANCIAS (MENSUALES)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$40,000</div>
+                      <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">VENTAS (MENSUALES)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      <?php
+
+                      $sql="select Sum(Ventas.total) ,month(Fecha) Mes from Ventas where Estado='Aprobada' and month(Fecha)= month(current_date())  ";
+                      if ($_SESSION['Rol']!=1){
+                        $sql.=" and Usuario='".$_SESSION['Identificacion']."' ";
+                      }
+                      $sql.="group by Mes";
+                       $query1=mysqli_query($con,$sql);
+                       
+                       $rw_Admin1=mysqli_fetch_array($query1);
+                       echo '$'.number_format($rw_Admin1[0]);
+
+                      ?>
+                      
+                      </div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
