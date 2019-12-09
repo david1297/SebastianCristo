@@ -5,72 +5,84 @@
 		exit;
         }
 	require_once ("config/db.php");
-	require_once ("config/conexion.php");
-$Numero='';
-$Fecha=date("Y-m-d");
+  require_once ("config/conexion.php");
+  
+  if (isset($_GET['Res'])) {
+    $EstadoG='Guardado';
+  }else{
+    $EstadoG ='Nuevo';
+  }
+$Numero=0;
 $FechaCreacion=date("Y-m-d");
-$Hora='09:00:00';
 $Cliente='';
 $Usuario=$_SESSION['Identificacion'];
 $Descripcion=''; 
 $Respuesta=''; 
-$Direccion ='';
 $Estado='';
 $Nombre_Completo=$_SESSION['Nombre_Completo'];
 $Nombre='';
 $Asignado='';
-$Programada='';
+$Pendiente='';
 $Cancelada='';
-$Realizada='';
+$Aprobada='';
+$Cruce=0;
+$Total='0';
 
 if (isset($_GET['Numero'])) {
 
-
-    $query=mysqli_query($con, "select Citas.Asignado,Citas.Respuesta,Citas.Numero,Citas.Fecha,Citas.FechaCreacion,Citas.Hora,Citas.Cliente,Citas.Usuario,Citas.Descripcion,Citas.Direccion,
-    Citas.Estado,Usuarios.Nombre_Completo,Clientes.Nombre from Citas 
-    inner join Usuarios on Usuarios.Identificacion = Citas.Usuario
-    inner join Clientes on Clientes.Documento = Citas.Cliente
-    where Citas.Numero ='".$_GET['Numero']."' ");
+    $query=mysqli_query($con, "select Cotizacion.Numero,Cotizacion.Fecha,
+    Cotizacion.Cliente,Cotizacion.Usuario, Cotizacion.Total,Cotizacion.Cruce,
+    Cotizacion.Estado,Usuarios.Nombre_Completo,Clientes.Nombre from Cotizacion 
+    inner join Usuarios on Usuarios.Identificacion = Cotizacion.Usuario
+    inner join Clientes on Clientes.Documento = Cotizacion.Cliente
+    where Cotizacion.Numero =".$_GET['Numero']." ");
         $rw_Admin=mysqli_fetch_array($query);
     
         
         $Numero=$rw_Admin['Numero'];
         $Fecha=$rw_Admin['Fecha'];
-        $FechaCreacion=$rw_Admin['FechaCreacion'];
-        $Hora=$rw_Admin['Hora'];
         $Cliente=$rw_Admin['Cliente'];
         $Usuario=$rw_Admin['Usuario'];
-        $Descripcion=$rw_Admin['Descripcion']; 
-        $Respuesta=$rw_Admin['Respuesta'];  
-        $Direccion =$rw_Admin['Direccion'];
         $Estado=$rw_Admin['Estado'];
         $Nombre_Completo=$rw_Admin['Nombre_Completo'];
         $Nombre=$rw_Admin['Nombre'];
-        $Asignado=$rw_Admin['Asignado'];
+        $Cruce=$rw_Admin['Cruce'];
+  
         
      
-        if($Estado =='Programada'){
-            $Programada='selected';
+        if($Estado =='Pendiente'){
+            $Pendiente='selected';
         }else{
           if($Estado =='Cancelada'){
             $Cancelada='selected';
           }else{
-            if($Estado =='Realizada'){
-              $Realizada='selected';
+            if($Estado =='Aprobada'){
+              $Aprobada='selected';
             }
           }
         }
+        $sql =  "DELETE FROM CotizacionDT Where  Cotizacion= $Numero and Cliente ='$Cliente'";
+              $query_update = mysqli_query($con,$sql);
+              
+        $sql="select * from CotizacionD where CotizacionD.Cotizacion= $Numero  ";
+							$query=mysqli_query($con, $sql); 
+							while($rw_Admin=mysqli_fetch_array($query)){
+								$Codigo=$rw_Admin['Producto'];
+								$Precio=$rw_Admin['Valor'];
+                $sql =  "INSERT INTO  CotizacionDT(Cliente,Cotizacion,Producto,Valor) VALUES ('$Cliente', '$Numero', '$Codigo', $Precio);";
+                $query_update = mysqli_query($con,$sql);
+							}
         
        
         $EstadoC="Editando";
     $Read= "readonly='readonly'";
-    $Cita="Cita N: ".$Numero;
+    $Cotizacion="Cotizacion N: ".$Numero;
 
 }else{
   $Procesos='disabled';
     $EstadoC="Nuevo";
     $Read= "";
-    $Cita="Nueva Cita";
+    $Cotizacion="Nueva Cotizacion";
     if (isset($_GET['Cliente'])) {
     
       $query=mysqli_query($con, "select  Documento,Nombre,Direccion from  Clientes
@@ -115,7 +127,7 @@ if (isset($_GET['Numero'])) {
 
                 ?>
                 <div class="table-responsive">
-                  <table class="table table-hover" id="dataTable" width="100%" cellspacing="0">
+                  <table class="table table-hover" id="BuscarClienteT" width="100%" cellspacing="0">
                     <thead>
                       <tr>
                         <th>Documento</th>
@@ -159,35 +171,84 @@ if (isset($_GET['Numero'])) {
             </div>
           </div>
       </div>
+      <div class="modal fade" id="BuscarProductos" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog Modal-large" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Buscador</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <?php
+                $query=mysqli_query($con, "select Codigo,Nombre,Descripcion,Precio 
+                
+                from Productos "); 
+
+                ?>
+                <div class="table-responsive">
+                  <table class="table table-hover" id="BuscarProductoT" width="100%" cellspacing="0">
+                    <thead>
+                      <tr>
+                        <th>Codigo</th>
+                        <th>Nombre</th>
+                        <th>Descripcion</th>
+                        <th>Precio</th>
+                      </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <?php
+                        while($rw_Admin=mysqli_fetch_array($query)){
+                            $PCodigo=$rw_Admin['Codigo'];
+                            $PNombre=$rw_Admin['Nombre'];
+                            $PDescripcion=$rw_Admin['Descripcion'];
+                            $Precio=$rw_Admin['Precio'];
+                            
+                            ?>
+                          
+                            <tr style="cursor:pointer;" onclick='AgregarProducto("<?php echo  $PCodigo;?>","<?php echo  $Precio;?>")'>
+                                  <td><?php echo  $PCodigo;?></td>
+                                  <td><?php echo  $PNombre;?></td>
+                                  <td><?php echo  $PDescripcion;?></td>
+                                  <td><?php echo  number_format($Precio);?></td>
+                                </tr>
+                            <?php
+                            }
+                        ?>
+                      
+                    </tbody>
+                  </table>
+                </div>  
+              </div>
+              <div class="modal-footer">
+                <button class="btn btn-danger" type="button" data-dismiss="modal">Cancelar</button>
+              </div>
+            </div>
+          </div>
+      </div>
 
       <div class="container-fluid">
         <div class="row" >
           <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                    <h2 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'><?php echo $Cita; ?></h2>
+                    <h2 class="m-0 font-weight-bold text-primary align-middle" id="LNumero"style='float: left !important;vertical-align: middle !important;'><?php echo $Cotizacion; ?></h2>
                     <div class="btn-group" style='float: right !important;'>
-                        <button type="button" class="btn btn-danger" onclick="location.href='ConsultarCitas.php';">
-                        <i class="far fa-calendar-alt"></i> Consultar Citas
+                        <button type="button" class="btn btn-danger" onclick="location.href='ConsultarCotizaciones.php';">
+                        <i class="far fa-calendar-alt"></i> Consultar Cotizaciones
                         </button>
                     </div>
                 </div>
                 <div class="card-body">               
-                  <form   id="Guardar_Cita" name="Guardar_Cita" class="form-horizontal col-sm-12" method="post">
+                  <form   id="Guardar_Cotizacion" name="Guardar_Cotizacion" class="form-horizontal col-sm-12" method="post">
                         <input type="text" class="form-control " hidden id="EstadoC" name="EstadoC"  value="<?php echo $EstadoC; ?>" >
                         <input type="text" class="form-control " hidden id="Numero" name="Numero"  value="<?php echo $Numero; ?>" >
                         <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
                           <div class="col-sm-2 offset-sm-1">
                             <label for="Documento" class="control-label">Fecha de Creacion</label>  
                             <input type="Date" class="form-control" id="FechaCreacion" name="FechaCreacion" value="<?php echo $FechaCreacion?>"readonly>
-                          </div>
-                          <div class="col-sm-2 ">
-                            <label for="Documento" class="control-label">Fecha de Cita</label>  
-                            <input type="Date" class="form-control" id="Fecha" name="Fecha" value="<?php echo $Fecha?>">
-                          </div>
-                          <div class="col-sm-2 ">
-                            <label for="Documento" class="control-label">Hora de Cita</label>  
-                            <input type="time" class="form-control" id="Hora" name="Hora" value="<?php echo $Hora?>">
                           </div>
                           <div class="col-sm-2 ">
                             <label for="Documento" class="control-label">Cliente</label>  
@@ -205,61 +266,52 @@ if (isset($_GET['Numero'])) {
                             <label for="Usuario" class="control-label">Usuario</label>  
                             <input type="text" class="form-control" id="NUsuario" name="NUsuario" value="<?php echo $Nombre_Completo?>"readonly>
                             <input hidden type="text" class="form-control" id="Usuario" name="Usuario" value="<?php echo $Usuario?>" >
-                          </div>        
-                        </div>
-                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
-                          <div class="col-sm-2 offset-sm-1">
-                            <label for="Direccion" class="control-label">Direccion</label>
-                            <input  type="text" class="form-control form-control-user"  id="Direccion" name="Direccion" required placeholder="Direccion" value="<?php echo $Direccion; ?>" autocomplete='off'>
                           </div>
                           <div class="col-sm-2">
                             <label for="Estado" class="control-label">Estado</label>
                             <select name="Estado" id="Estado" class='form-control form-control-user'>
-                              <option value="Programada" <?php echo $Programada;?>>Programada</option>
+                              <option value="Pendiente" <?php echo $Pendiente;?>>Pendiente</option>
                               <option value="Cancelada"<?php echo $Cancelada;?>>Cancelada</option>
-                              <option value="Realizada"<?php echo $Realizada;?>>Realizada</option>
+                              <option value="Aprobada"<?php echo $Aprobada;?>>Aprobada</option>
                             </select>
-                          </div>
+                          </div> 
                           <div class="col-sm-2">
-                            <label for="Asignado" class="control-label">Asignado A:</label>
-                            <select name="Asignado" id="Asignado" class='form-control form-control-user'>
-                              <?php
-                              $query=mysqli_query($con, "select Nombre_Completo,Identificacion from Usuarios  where Rol=3 or Rol=4 "); 
-                              while($rw_Admin=mysqli_fetch_array($query)){
-                                $Nombre_Completo=$rw_Admin['Nombre_Completo'];
-                                $Identificacion=$rw_Admin['Identificacion'];
-                                if ($Identificacion==$Asignado){
-                                  $SAsignado='selected';
-                                }else{
-                                  $SAsignado='';
-                                }
-                                ?>
-                              
-                                <option value="<?php echo $Identificacion;?>" <?php echo $SAsignado;?>><?php echo $Nombre_Completo;?></option>
-                                
-                                <?php
-                              }
-                              ?>
-                            </select>
+                            <label for="Estado" class="control-label">Cruce</label>
+                            <input type="text" class="form-control" id="Cruce" name="Cruce" value="<?php echo $Cruce?>"readonly>
+                          </div>        
+                        </div>
+
+                        <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
+                          <div class="col-md-10 offset-sm-1">
+                            <h2>Servicios: </h2>
                           </div>
                         </div>
                         <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
                           <div class="col-md-10 offset-sm-1">
-  										      <label for="Descripcion">Descripcion:</label>
-  										      <textarea class="form-control" rows="5" id="Descripcion" name="Descripcion"><?php echo $Descripcion;?></textarea>
-									        </div>
+                            <button class="btn btn-success" type="button" data-toggle="modal" data-target="#BuscarProductos">Agregar <i class="fas fa-plus-circle"></i></button>
+                          </div>
                         </div>
                         <div class="row" style="margin-top: 5px; margin-bottom: 5px;">
                           <div class="col-md-10 offset-sm-1">
-  										      <label for="Respuesta">Respuesta:</label>
-  										      <textarea class="form-control" rows="5" id="Respuesta" name="Respuesta"><?php echo $Respuesta;?></textarea>
-									        </div>
+                          <div id="Productos"></div>
+                            
+                          </div>
                         </div>
-                       
-                        
-                        
-                        
-                        <div class="" id="Resultado"></div>
+                        <div class="" id="Resultado">
+                          <?php
+                          if (isset($_GET['Res'])) {
+                            ?>
+                            <div class="alert alert-success" role="alert">
+                              <button type="button" class="close" data-dismiss="alert">&times;</button>
+                              <strong>¡Bien hecho! </strong>
+                              Los Datos Se Han Guardado Con Exito.
+                            </div>
+                           
+                            <?php
+                          }  
+                          ?>
+                        </div>
+                        <input type="text" id="Resp" value="<?php echo $EstadoG?>" hidden>
                         <div class=" pull-right col-sm-8 offset-sm-1">
                           <button type="submit" class="btn btn-primary" >Guardar datos</button>			
                           <button type="button" class="btn btn-danger"  onclick='Cancelar()'>Cancelar</button>
@@ -300,10 +352,10 @@ if (isset($_GET['Numero'])) {
   <script src="js/demo/datatables-demo.js"></script>
 
 <script>
+
   $(document).ready( function () {
-    $('#TablaCotizaciones').DataTable();
-    $('#TablaIncidencias').DataTable();
-    $('#TablaVentas').DataTable();
+    $('#BuscarProductoT').DataTable();
+    $('#BuscarClienteT').DataTable();
 
     
 } );
@@ -314,6 +366,66 @@ $('#Direccion').val(Direccion);
 $('#BuscarCliente').modal("hide");
 
 }
+function CargarProductos(){
+  var Cliente = $("#Cliente").val();
+  var Numero = $("#Numero").val();
+  $.ajax({
+			type: "GET",
+			url: "Componentes/Ajax/CargarProductosCotizacion.php?Cliente="+Cliente+"&Numero="+Numero,
+			 beforeSend: function(objeto){
+				$("#Productos").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
+			  },
+			success: function(datos){
+				$("#Productos").html('');
+
+				$("#Productos").html(datos);
+       
+		  }
+	});
+
+}
+function AgregarProducto(Codigo,Precio){
+  var Cliente = $('#Cliente').val();
+  var Numero = $('#Numero').val();
+  if (Numero ==''){
+    Numero = 0;
+  }
+  if(Cliente==''){
+    alert('Debes Seleccionar El Cliente');
+  }else{
+    $.ajax({
+			type: "GET",
+			url: "Componentes/Ajax/AgregarProductoCotizacion.php?Codigo="+Codigo+"&Cliente="+Cliente+"&Numero="+Numero+"&Precio="+Precio,
+			 beforeSend: function(objeto){
+				$("#Resultado").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
+			  },
+			success: function(datos){
+        $('#BuscarProductos').modal("hide");
+				$("#Resultado").html(datos);
+        CargarProductos();
+       
+		  }
+	});
+  }
+  
+  event.preventDefault();
+}
+function EliminarProducto(Id){
+  $.ajax({
+			type: "GET",
+			url: "Componentes/Ajax/EliminarProductoCotizacion.php?Id="+Id,
+			 beforeSend: function(objeto){
+				$("#Resultado").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
+			  },
+			success: function(datos){
+        CargarProductos();
+				$("#Resultado").html(datos);
+       
+		  }
+	});
+  event.preventDefault();
+
+}
 function validaNumericos(event) {
     if(event.charCode >= 48 && event.charCode <= 57){
       return true;
@@ -321,13 +433,15 @@ function validaNumericos(event) {
      return false;        
 }
 function Cargar() {
-			CargarCiudades();
+  CargarProductos();
+  ResultadoGuardar();
 		}
-$( "#Guardar_Cita" ).submit(function( event ) {
+$( "#Guardar_Cotizacion" ).submit(function( event ) {
+  
  		var parametros = $(this).serialize();
 	 	$.ajax({
 			type: "POST",
-			url: "Componentes/Ajax/Guardar_Cita.php",
+			url: "Componentes/Ajax/Guardar_Cotizacion.php",
 			data: parametros,
 			 beforeSend: function(objeto){
 				$("#Resultado").html('<div class="col-sm-2 offset-sm-6 spinner-border text-danger text-center" role="status"><span class="sr-only">Loading...</span></div>');
@@ -338,8 +452,15 @@ $( "#Guardar_Cita" ).submit(function( event ) {
         var Res = datos.split('*');
 					if(Res[1]=='Correcto'){
 						 $('#Numero').val(Res[2]);
-						 $('#LNumero').html("Venta Numero: "+Res[2]);
+            
+           
+             
+             
+
+						 $('#LNumero').html("Cotizacion Numero: "+Res[2]);
 						 $("#Resultado").html(Res[3]);
+             location.href='Cotizacion.php?Numero='+Res[2]+'&Res=Correcto';
+             
 					}else{
 						$("#Resultado").html(datos);
 					}
@@ -347,6 +468,21 @@ $( "#Guardar_Cita" ).submit(function( event ) {
 	});
   event.preventDefault();
 })
+function ResultadoGuardar(){
+  var Estado = $('#Estado').val();
+  var Numero = $('#Numero').val();
+  var Cruce = $('#Cruce').val();
+  var Res = $('#Resp').val();
+  if ((Res=='Guardado')){
+
+    if ((Estado=='Aprobada')&&(Cruce==0)){
+      $('#ConfirVenta').modal('show');
+             
+    }
+  }
+
+  
+}
 function Cancelar(){
     var Estado=$('#EstadoC').val();
     if(Estado=='Nuevo'){
@@ -355,7 +491,29 @@ function Cancelar(){
         location.reload();
     }
 }
+function GenerarFactura(){
+  var Numero = $('#Numero').val();
+  window.open('Ventas.php?Cotizacion='+Numero, '_blank');
+  location.href='Cotizacion.php?Numero='+Numero;
+}
 </script>
+<div class="modal fade " id="ConfirVenta" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog Modal-smal" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">¿Preparado para irte?</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">Desea que se genere Automaticamente La Factura Para Esta Cotizacion ?</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+          <a class="btn btn-danger" href="#" onclick="GenerarFactura()">Generar</a>
+        </div>
+      </div>
+    </div>
+</div>
 </body>
 
 </html>

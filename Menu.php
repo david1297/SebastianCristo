@@ -53,17 +53,13 @@
     </a>
     <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
       <div class="bg-white py-2 collapse-inner rounded">
-        <a class="collapse-item" href="ConsultarCotizaciones.html">Cotizacion</a>
-        <a class="collapse-item" href="ConsultarVentas.html">Venta</a>
+        <a class="collapse-item" href="ConsultarCotizaciones.php">Cotizacion</a>
+        <a class="collapse-item" href="ConsultarVentas.php">Venta</a>
       </div>
     </div>
   </li>
   
   <hr class="sidebar-divider">
- 
-
-  
-
   <hr class="sidebar-divider d-none d-md-block">
   <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>

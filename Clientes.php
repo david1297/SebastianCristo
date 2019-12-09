@@ -251,53 +251,62 @@ if (isset($_GET['Documento'])) {
                             </button>
                           </div>
                         </div>
+                        <?php
+                        $query=mysqli_query($con, "select Cotizacion.Numero,Cotizacion.Fecha,
+                        Usuarios.Nombre_Completo,Clientes.Nombre,Cotizacion.Estado,Cotizacion.Total
+                        
+                        from Cotizacion 
+                        inner join Usuarios on Usuarios.Identificacion = Cotizacion.Usuario
+                        inner join Clientes on Clientes.Documento = Cotizacion.Cliente
+                        where Cotizacion.Cliente='$Documento' 
+                        order by Cotizacion.Fecha asc
+                        "); 
+                        ?>
                         <div class="card-body">
                         <div class="table-responsive">
                           <table class="table table-hover table-sm" id="TablaCotizaciones" width="100%" cellspacing="0">
-                            <thead>
-                              <tr>
-                                <th>Numero</th>
-                                <th>Fecha</th>
-                                <th>Usuario</th>
-                                <th>Valor</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr style="cursor:pointer;" onclick=''>
-                                <td>1</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              <tr>
-                                <td>4</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              <tr>
-                                <td>5</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              
+                          <thead>
+                            <tr>
+                              <th>Numero</th>
+                              <th>Fecha</th>
+                              <th>Usuario</th>
+                              <th>Cliente</th>
+                              <th>Estado</th>
+                              <th>Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <?php
+                              while($rw_Admin=mysqli_fetch_array($query)){
+                                  $Numero=$rw_Admin['Numero'];
+                                  $Fecha=$rw_Admin['Fecha'];
+                                  $Total=$rw_Admin['Total'];
+                                  $Usuario=$rw_Admin['Nombre_Completo'];
+                                  $Cliente=$rw_Admin['Nombre'];
+                                  $Estado=$rw_Admin['Estado'];
+                                
+                                  ?>
+                                
+                                  <tr style="cursor:pointer;" onclick='EditarCotizacion("<?php echo  $Numero;?>")'>
+                                        <td><?php echo  $Numero;?></td>
+                                        <td><?php echo  $Fecha;?></td>
+                                        <td><?php echo  $Usuario;?></td>
+                                        <td><?php echo  $Cliente;?></td>
+                                        <td><?php echo  $Estado;?></td>
+                                        <td>$<?php echo  number_format($Total);?></td>
+
+                                      
+                                      </tr>
+                                
+                                
+                                  <?php
+                                  }
 
                               
                               
-                            </tbody>
+                              ?>
+                            
+                          </tbody>
                           </table>
                         </div>
                               
@@ -307,117 +316,70 @@ if (isset($_GET['Documento'])) {
                         <div class="card-header py-3">
                           <h6 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'>Ventas</h6>
                           <div class="btn-group" style='float: right !important;'>
-                            <button type="button" class="btn btn-danger" onclick="location.href='Venta.php?Cliente=<?php echo $Documento;?>';">
+                            <button type="button" class="btn btn-danger" onclick="location.href='Ventas.php?Cliente=<?php echo $Documento;?>';">
                               <i class="fas fa-file"></i>  Nueva Venta
                             </button>
                           </div>
                         </div>
+                        <?php
+                        $query=mysqli_query($con, "select Ventas.Numero,Ventas.Fecha,
+                        Usuarios.Nombre_Completo,Clientes.Nombre,Ventas.Estado,Ventas.Total
+                        
+                        from Ventas 
+                        inner join Usuarios on Usuarios.Identificacion = Ventas.Usuario
+                        inner join Clientes on Clientes.Documento = Ventas.Cliente
+                        where Ventas.Cliente='$Documento' 
+                        order by Ventas.Fecha asc
+                        "); 
+                        ?>
                         <div class="card-body">
                         <div class="table-responsive">
-                          <table class="table table-hover table-sm" id="TablaVentas" width="100%" cellspacing="0">
-                            <thead>
-                              <tr>
-                                <th>Numero</th>
-                                <th>Fecha</th>
-                                <th>Usuario</th>
-                                <th>Valor</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr style="cursor:pointer;" onclick=''>
-                                <td>1</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              <tr>
-                                <td>2</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              <tr>
-                                <td>3</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              <tr>
-                                <td>4</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              <tr>
-                                <td>5</td>
-                                <td>01-01-2019</td>
-                                <td>Vendedor1</td>
-                                <td>$320,800</td>
-                              </tr>
-                              
+                        <table class="table table-hover table-sm" id="dataTable" width="100%" cellspacing="0">
+                          <thead>
+                            <tr>
+                              <th>Numero</th>
+                              <th>Fecha</th>
+                              <th>Usuario</th>
+                              <th>Cliente</th>
+                              <th>Estado</th>
+                              <th>Total</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                              <?php
+                              while($rw_Admin=mysqli_fetch_array($query)){
+                                  $Numero=$rw_Admin['Numero'];
+                                  $Fecha=$rw_Admin['Fecha'];
+                                  $Total=$rw_Admin['Total'];
+                                  $Usuario=$rw_Admin['Nombre_Completo'];
+                                  $Cliente=$rw_Admin['Nombre'];
+                                  $Estado=$rw_Admin['Estado'];
+                                
+                                  ?>
+                                
+                                  <tr style="cursor:pointer;" onclick='EditarVenta("<?php echo  $Numero;?>")'>
+                                        <td><?php echo  $Numero;?></td>
+                                        <td><?php echo  $Fecha;?></td>
+                                        <td><?php echo  $Usuario;?></td>
+                                        <td><?php echo  $Cliente;?></td>
+                                        <td><?php echo  $Estado;?></td>
+                                        <td>$<?php echo  number_format($Total);?></td>
+
+                                      
+                                      </tr>
+                                
+                                
+                                  <?php
+                                  }
 
                               
                               
-                            </tbody>
-                          </table>
+                              ?>
+                            
+                          </tbody>
+                        </table>
                         </div>
                               
-                        </div>
-                      </div>
-                      <div class="card mb-4">
-                        <div class="card-header py-3">
-                          <h6 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'>Incidencias</h6>
-                          <div class="btn-group" style='float: right !important;'>
-                            <button type="button" class="btn btn-danger" onclick="location.href='Incidencia.php?Cliente=<?php echo $Documento;?>';">
-                              <i class="fas fa-file"></i>  Nueva Incidencia
-                            </button>
-                          </div>
-                        </div>
-                        <div class="card-body">
-                          <div class="table-responsive">
-                            <table class="table table-hover table-sm" id="TablaIncidencias" width="100%" cellspacing="0">
-                              <thead>
-                                <tr>
-                                  <th>Numero</th>
-                                  <th>Fecha</th>
-                                  <th>Usuario</th>
-                                  <th>Estado</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                <tr style="cursor:pointer;" onclick=''>
-                                  <td>1</td>
-                                  <td>01-01-2019</td>
-                                  <td>Vendedor1</td>
-                                  <td>Pendiente</td>
-                                </tr>
-                                <tr>
-                                  <td>2</td>
-                                  <td>01-01-2019</td>
-                                  <td>Vendedor1</td>
-                                  <td>Pendiente</td>
-                                </tr>
-                                <tr>
-                                  <td>3</td>
-                                  <td>01-01-2019</td>
-                                  <td>Vendedor1</td>
-                                  <td>Pendiente</td>
-                                </tr>
-                                <tr>
-                                  <td>4</td>
-                                  <td>01-01-2019</td>
-                                  <td>Vendedor1</td>
-                                  <td>Pendiente</td>
-                                </tr>
-                                <tr>
-                                  <td>5</td>
-                                  <td>01-01-2019</td>
-                                  <td>Vendedor1</td>
-                                  <td>Pendiente</td>
-                                </tr>    
-                              </tbody>
-                            </table>  
-                          </div>
                         </div>
                       </div>
                       <div class="card mb-4">
@@ -485,6 +447,40 @@ if (isset($_GET['Documento'])) {
                           </div>
                         </div>
                       </div>
+                      <div class="card mb-4">
+                        <div class="card-header py-3">
+                          <h6 class="m-0 font-weight-bold text-primary align-middle" style='float: left !important;vertical-align: middle !important;'>Incidencias</h6>
+                          <div class="btn-group" style='float: right !important;'>
+                            <button type="button" class="btn btn-danger" onclick="location.href='Incidencia.php?Cliente=<?php echo $Documento;?>';">
+                              <i class="fas fa-file"></i>  Nueva Incidencia
+                            </button>
+                          </div>
+                        </div>
+                        <div class="card-body">
+                          <div class="table-responsive">
+                            <table class="table table-hover table-sm" id="TablaIncidencias" width="100%" cellspacing="0">
+                              <thead>
+                                <tr>
+                                  <th>Numero</th>
+                                  <th>Fecha</th>
+                                  <th>Usuario</th>
+                                  <th>Estado</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr style="cursor:pointer;" onclick=''>
+                                  <td>1</td>
+                                  <td>01-01-2019</td>
+                                  <td>Vendedor1</td>
+                                  <td>Pendiente</td>
+                                </tr>
+                                   
+                              </tbody>
+                            </table>  
+                          </div>
+                        </div>
+                      </div>
+                      
                     </div>
                   </div>  
                 </div>
@@ -533,6 +529,12 @@ if (isset($_GET['Documento'])) {
 } );
 function EditarCita(Numero){
     location.href='Citas.php?Numero='+Numero;
+}
+function EditarVenta(Numero){
+  location.href='Ventas.php?Numero='+Numero;
+}
+function EditarCotizacion(Numero){
+  location.href='Cotizacion.php?Numero='+Numero;
 }
 function validaNumericos(event) {
     if(event.charCode >= 48 && event.charCode <= 57){

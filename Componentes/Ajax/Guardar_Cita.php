@@ -69,7 +69,7 @@ if (empty($_POST['Fecha'])){
 
                     $query_update = mysqli_query($con,$sql);
                     if ($query_update) {
-                        $messages[] = "Los Datos Se Han Modificado Con Exito.";
+                        $messages[] = "Los Datos Se Han Guardado Con Exito.";
                        
                     } else {
                         $errors[] = "Lo sentimos , el registro falló. Por favor, regrese y vuelva a intentarlo.<br>";
@@ -91,7 +91,8 @@ if (empty($_POST['Fecha'])){
 			<?php
 			}
 			if (isset($messages)){
-				
+
+				echo '*Correcto*'.$NumeroCita.'*';
 				?>
 				<div class="alert alert-success" role="alert">
 						<button type="button" class="close" data-dismiss="alert">&times;</button>
