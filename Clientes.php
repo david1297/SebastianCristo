@@ -99,6 +99,24 @@ if (isset($_GET['Documento'])) {
         include('Menu.php');
       ?>
       <div class="container-fluid">
+
+      <div class="modal fade " id="ConfirCotizacion" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog Modal-smal" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">¿Preparado para irte?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">×</span>
+                </button>
+              </div>
+              <div class="modal-body">Desea que se genere Automaticamente Una Cotizacion para este Cliente ?</div>
+              <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <a class="btn btn-danger" href="#" onclick="GenerarCotizacion()">Generar</a>
+              </div>
+            </div>
+          </div>
+        </div>
         <div class="row" >
           <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
@@ -557,11 +575,21 @@ $( "#Guardar_Cliente" ).submit(function( event ) {
 			success: function(datos){
         $('#pills-Procesos-tab').removeClass('disabled');
 			$("#Resultado").html(datos);
+        var c = $('#EstadoC').val();
+        if(c=='Nuevo'){
+          $('#ConfirCotizacion').modal('show');
+        }
 			
 		  }
 	});
   event.preventDefault();
 })
+function GenerarCotizacion(){
+  var Documento = $('#Documento').val();
+  window.open('Cotizacion.php?Cliente='+Documento, '_blank');
+  
+  location.href='Clientes.php?Documento='+Documento;
+}
 function CargarCiudades(){
 			var Depto = $("#Departamento").val();
 			
