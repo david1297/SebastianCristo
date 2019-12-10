@@ -7,11 +7,11 @@ var ctx = document.getElementById("myPieChart");
 var myPieChart = new Chart(ctx, {
   type: 'doughnut',
   data: {
-    labels: ["Direct", "Referral", "Social"],
+    labels: ["Canceladas ", "Aprobadas", "Pendientes"],
     datasets: [{
-      data: [55, 30, 15],
-      backgroundColor: ['#4e73df', '#1cc88a', '#36b9cc'],
-      hoverBackgroundColor: ['#2e59d9', '#17a673', '#2c9faf'],
+      data: [55, 300, 15],
+      backgroundColor: ['#db2323', '#1cc88a', '#f6c23e'],
+      hoverBackgroundColor: ['#db2323', '#1cc88a', '#f6c23e'],
       hoverBorderColor: "rgba(234, 236, 244, 1)",
     }],
   },
@@ -28,7 +28,7 @@ var myPieChart = new Chart(ctx, {
       caretPadding: 10,
     },
     legend: {
-      display: false
+      display: true
     },
     cutoutPercentage: 80,
   },

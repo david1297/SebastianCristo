@@ -29,7 +29,6 @@
       <div class="container-fluid">
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Tablero</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-danger shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generar Reporte</a>
           </div>
           <div class="row">
             <div class="col-xl-3 col-md-6 mb-4">
@@ -67,8 +66,21 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">GANANCIAS (ANUALES)</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">$215,000</div>
+                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">COMISIONES (MENSUALES)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      <?php
+
+                      $sql="select Sum(Ventas.total) ,month(Fecha) Mes from Ventas where Estado='Aprobada' and month(Fecha)= month(current_date())  ";
+                      if ($_SESSION['Rol']!=1){
+                        $sql.=" and Usuario='".$_SESSION['Identificacion']."' ";
+                      }
+                      $sql.="group by Mes";
+                       $query1=mysqli_query($con,$sql);
+                       
+                       $rw_Admin1=mysqli_fetch_array($query1);
+                       echo '$'.number_format($rw_Admin1[0]*0.10);
+
+                      ?></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -82,14 +94,31 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">TAREAS</div>
+                      <div class="text-xs font-weight-bold text-info text-uppercase mb-1">META (Mensual)</div>
                       <div class="row no-gutters align-items-center">
                         <div class="col-auto">
-                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                          <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">
+                          <?php
+
+                      $sql="select Sum(Ventas.total) ,month(Fecha) Mes from Ventas where Estado='Aprobada' and month(Fecha)= month(current_date())  ";
+                      if ($_SESSION['Rol']!=1){
+                        $sql.=" and Usuario='".$_SESSION['Identificacion']."' ";
+                      }
+                      $sql.="group by Mes";
+                       $query1=mysqli_query($con,$sql);
+                       
+                       $rw_Admin1=mysqli_fetch_array($query1);
+                       echo '$'.number_format(30000000-$rw_Admin1[0]);
+                      $Porcentaje= ($rw_Admin1[0]/30000000)*100;
+
+                   
+                      ?>
+                          </div>
                         </div>
                         <div class="col">
+                        <h4 class="small font-weight-bold">Progreso <span class="float-right"><?php echo $Porcentaje?>%</span></h4>
                           <div class="progress progress-sm mr-2">
-                            <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                            <div class="progress-bar bg-info" role="progressbar" style="width: <?php echo $Porcentaje?>%" aria-valuenow="<?php echo $Porcentaje?>" aria-valuemin="0" aria-valuemax="100"></div>
                           </div>
                         </div>
                       </div>
@@ -106,11 +135,25 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">SOLICITUDES PENDIENTES</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Ventas (Mensuales)</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                      <?php
+
+                      $sql="select count(Ventas.total) ,month(Fecha) Mes from Ventas where Estado='Aprobada' and month(Fecha)= month(current_date())  ";
+                      if ($_SESSION['Rol']!=1){
+                        $sql.=" and Usuario='".$_SESSION['Identificacion']."' ";
+                      }
+                      $sql.="group by Mes";
+                       $query1=mysqli_query($con,$sql);
+                       
+                       $rw_Admin1=mysqli_fetch_array($query1);
+                       echo number_format($rw_Admin1[0]);
+
+                      ?>
+                      </div>
                     </div>
                     <div class="col-auto">
-                      <i class="fas fa-comments fa-2x text-gray-300"></i>
+                      <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
                     </div>
                   </div>
                 </div>
@@ -119,23 +162,12 @@
           </div>
           <div class="row">
 
-            <div class="col-xl-8 col-lg-7">
+            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-danger">Earnings Overview</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </div>
+                  <h6 class="m-0 font-weight-bold text-danger">Balance Anual</h6>
+                  
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
@@ -151,36 +183,15 @@
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-danger">Revenue Sources</h6>
-                  <div class="dropdown no-arrow">
-                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
-                      <div class="dropdown-header">Dropdown Header:</div>
-                      <a class="dropdown-item" href="#">Action</a>
-                      <a class="dropdown-item" href="#">Another action</a>
-                      <div class="dropdown-divider"></div>
-                      <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                  </div>
+                  <h6 class="m-0 font-weight-bold text-danger">Resumen de Ventas</h6>
+                  
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
                   <div class="chart-pie pt-4 pb-2">
                     <canvas id="myPieChart"></canvas>
                   </div>
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-danger"></i> Direct
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> Social
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> Referral
-                    </span>
-                  </div>
+                  
                 </div>
               </div>
             </div>
